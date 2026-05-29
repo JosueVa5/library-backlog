@@ -1,0 +1,111 @@
+<!-- 
+  Formulario principal.
+  Usamos flex + gap para espaciar verticalmente cada campo.
+  NO usamos (ngSubmit) porque los botones manejan las acciones manualmente.
+-->
+<form class="flex flex-col gap-5">
+
+  <!-- ───── Campo: Username ───── -->
+  <!-- 
+    mat-form-field con appearance="outline" da el estilo de borde visible.
+    [(ngModel)] hace two-way binding: si cambia el input, cambia settings.username
+    y viceversa. name="username" es requerido cuando se usa ngModel en un form.
+  -->
+  <mat-form-field appearance="outline" class="w-full">
+    <mat-label>Username</mat-label>
+    <!-- matPrefix coloca el ícono dentro del campo, a la izquierda -->
+    <mat-icon matPrefix class="mr-2">person</mat-icon>
+    <input
+      matInput
+      [(ngModel)]="settings.username"
+      name="username"
+      placeholder="Your username"
+    />
+  </mat-form-field>
+
+  <!-- ───── Campo: Email ───── -->
+  <!-- type="email" activa la validación nativa del navegador para emails -->
+  <mat-form-field appearance="outline" class="w-full">
+    <mat-label>Email</mat-label>
+    <mat-icon matPrefix class="mr-2">email</mat-icon>
+    <input
+      matInput
+      [(ngModel)]="settings.email"
+      name="email"
+      type="email"
+      placeholder="email@example.com"
+    />
+  </mat-form-field>
+
+  <!-- ───── Campo: Language (dropdown) ───── -->
+  <!-- 
+    mat-select reemplaza al <select> nativo con estilos de Material.
+    @for es la sintaxis moderna de Angular 17+ (equivalente a *ngFor).
+    track lang.value le dice a Angular cómo identificar cada elemento
+    para optimizar el renderizado.
+  -->
+  <mat-form-field appearance="outline" class="w-full">
+    <mat-label>Language</mat-label>
+    <mat-icon matPrefix class="mr-2">language</mat-icon>
+    <mat-select [(ngModel)]="settings.language" name="language">
+      @for (lang of languages; track lang.value) {
+        <!-- [value] es lo que se guarda, el texto entre tags es lo que se ve -->
+        <mat-option [value]="lang.value">{{ lang.label }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <!-- ───── Toggles (switches on/off) ───── -->
+  <div class="flex flex-col gap-3">
+
+    <!-- Toggle: Notifications -->
+    <!-- 
+      Cada toggle está en un contenedor con fondo gris claro y borde.
+      justify-between empuja el texto a la izquierda y el toggle a la derecha.
+      mat-slide-toggle es el componente interruptor de Angular Material.
+      color="primary" usa el color principal del tema de Material.
+    -->
+    <div class="flex items-center justify-between bg-slate-50 border border-slate-200 rounded-lg px-4 py-3">
+      <div class="flex items-center gap-2 text-slate-700">
+        <mat-icon class="text-slate-500">notifications</mat-icon>
+        <span class="font-medium">Notifications</span>
+      </div>
+      <mat-slide-toggle
+        [(ngModel)]="settings.notifications"
+        name="notifications"
+        color="primary"
+      />
+    </div>
+
+    <!-- Toggle: Dark Mode -->
+    <div class="flex items-center justify-between bg-slate-50 border border-slate-200 rounded-lg px-4 py-3">
+      <div class="flex items-center gap-2 text-slate-700">
+        <mat-icon class="text-slate-500">dark_mode</mat-icon>
+        <span class="font-medium">Dark Mode</span>
+      </div>
+      <mat-slide-toggle
+        [(ngModel)]="settings.darkMode"
+        name="darkMode"
+        color="primary"
+      />
+    </div>
+
+  </div>
+
+  <!-- ───── Botones de acción ───── -->
+  <!-- 
+    justify-end alinea los botones a la derecha.
+    (click) enlaza el evento clic a los métodos del componente.
+    type="button" evita que el form se envíe automáticamente al hacer clic.
+  -->
+  <div class="flex gap-3 justify-end pt-2">
+    <button mat-tonal-button type="button" (click)="onCancel()">
+      Cancel
+    </button>
+    <!-- mat-flat-button con color="primary" es el botón principal relleno -->
+    <button mat-flat-button color="primary" type="button" (click)="onSave()">
+      Save changes
+    </button>
+  </div>
+
+</form>

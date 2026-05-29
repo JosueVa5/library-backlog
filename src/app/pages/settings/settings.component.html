@@ -1,1 +1,53 @@
-<p>settings works!</p>
+<!-- 
+  Contenedor principal con padding y ancho máximo centrado.
+  max-w-2xl limita el ancho en pantallas grandes para mejor legibilidad.
+  mx-auto centra horizontalmente el contenido.
+-->
+<div class="p-8 max-w-2xl mx-auto">
+
+  <!-- ───── Header de la página ───── -->
+  <div class="mb-8">
+    <!-- flex + items-center alinea el ícono y el texto verticalmente -->
+    <h1 class="text-2xl font-semibold text-slate-800 flex items-center gap-2">
+      <mat-icon class="text-slate-600">settings</mat-icon>
+      Settings
+    </h1>
+    <p class="text-slate-500 mt-1 text-sm">Manage your account preferences</p>
+  </div>
+
+  <!-- ───── Card contenedora ───── -->
+  <!-- 
+    overflow-hidden es necesario para que el header con fondo oscuro
+    respete el border-radius (rounded-2xl) de la card.
+  -->
+  <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+
+    <!-- Encabezado de la card — mismo color bg-slate-900 que el navbar -->
+    <div class="bg-slate-900 text-white px-6 py-4 flex items-center gap-2">
+      <mat-icon>manage_accounts</mat-icon>
+      <span class="font-medium text-lg">User Preferences</span>
+    </div>
+
+    <!-- 
+      Cuerpo de la card donde vive el componente hijo.
+      
+      [settings]="currentSettings"
+        → @Input: le pasamos los datos del padre al hijo
+
+      (settingsSaved)="onSettingsSaved($event)"
+        → @Output: escuchamos el evento del hijo; $event trae los datos guardados
+
+      (settingsCancelled)="onSettingsCancelled()"
+        → @Output: escuchamos cuando el usuario cancela (sin datos)
+    -->
+    <div class="px-6 py-6">
+      <app-settings-form
+        [settings]="currentSettings"
+        (settingsSaved)="onSettingsSaved($event)"
+        (settingsCancelled)="onSettingsCancelled()"
+      />
+    </div>
+
+  </div>
+
+</div>
